@@ -28,7 +28,7 @@ def load_user(user_id): # 创建用户加载回调函数，接受用户 ID 作�
 # 配置 SQLite 数据库路径
 # app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(app.root_path, 'data.db')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev')
-app.config['SQLALCHEMY_DATABASE_URI'] = prefix + os.path.join(os.path.dirname(app.root_path), os.getenv('DATABASE_FILE','data.db'))
+app.config['SQLALCHEMY_DATABASE_URI'] = prefix +os.path.join(os.path.dirname(app.root_path), os.getenv('DATABASE_FILE','data.db'))
 # 关闭对模型修改的监控
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -203,42 +203,42 @@ def settings():
     return render_template('settings.html')
 
 
-# # 自定义命令，生成假数据
-# @app.cli.command()
-# def forge():
-#     """Generate fake data."""
-#     db.create_all()
-#     name = 'Grey Li'
-#     movies = [
-#         {'title': 'My Neighbor Totoro', 'year': '1988'},
-#         {'title': 'Dead Poets Society', 'year': '1989'},
-#         {'title': 'A Perfect World', 'year': '1993'},
-#         {'title': 'Leon', 'year': '1994'},
-#         {'title': 'Mahjong', 'year': '1996'},
-#         {'title': 'Swallowtail Butterfly', 'year': '1996'},
-#         {'title': 'King of Comedy', 'year': '1999'},
-#         {'title': 'Devils on the Doorstep', 'year': '1999'},
-#         {'title': 'WALL-E', 'year': '2008'},
-#         {'title': 'The Pork of Music', 'year': '2012'},
-#     ]
-#
-#     user = User(name=name)
-#     db.session.add(user)
-#     for m in movies:
-#         movie = Movie(title=m['title'], year=m['year'])
-#         db.session.add(movie)
-#     db.session.commit()
-#     click.echo('Done.')
+# 自定义命令，生成假数据
+@app.cli.command()
+def forge():
+    """Generate fake data."""
+    db.create_all()
+    name = 'Grey Li'
+    movies = [
+        {'title': 'My Neighbor Totoro', 'year': '1988'},
+        {'title': 'Dead Poets Society', 'year': '1989'},
+        {'title': 'A Perfect World', 'year': '1993'},
+        {'title': 'Leon', 'year': '1994'},
+        {'title': 'Mahjong', 'year': '1996'},
+        {'title': 'Swallowtail Butterfly', 'year': '1996'},
+        {'title': 'King of Comedy', 'year': '1999'},
+        {'title': 'Devils on the Doorstep', 'year': '1999'},
+        {'title': 'WALL-E', 'year': '2008'},
+        {'title': 'The Pork of Music', 'year': '2012'},
+    ]
 
-# # 自定义命令，初始化数据库
-# @app.cli.command()
-# @click.option('--drop', is_flag=True, help='Create after drop.')
-# def initdb(drop):
-#     """Initialize the database."""
-#     if drop:
-#         db.drop_all()
-#     db.create_all()
-#     click.echo('Initialized database.')
+    user = User(name=name)
+    db.session.add(user)
+    for m in movies:
+        movie = Movie(title=m['title'], year=m['year'])
+        db.session.add(movie)
+    db.session.commit()
+    click.echo('Done.')
+
+# 自定义命令，初始化数据库
+@app.cli.command()
+@click.option('--drop', is_flag=True, help='Create after drop.')
+def initdb(drop):
+    """Initialize the database."""
+    if drop:
+        db.drop_all()
+    db.create_all()
+    click.echo('Initialized database.')
 
 
 if __name__ == '__main__':
